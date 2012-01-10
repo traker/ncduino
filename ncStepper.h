@@ -18,8 +18,8 @@
 */
 
 // ensure this library description is only included once
-#ifndef Stepper_h
-#define Stepper_h
+#ifndef ncStepper_h
+#define ncStepper_h
 
 // library interface description
 class Stepper {
