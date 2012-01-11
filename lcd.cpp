@@ -5,6 +5,7 @@
  *      Author: guill
  */
 #include "lcd.h"
+#include <WProgram.h>
 Lcd::Lcd(int pinrx){
 
 }
