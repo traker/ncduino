@@ -23,14 +23,16 @@ void loop() {
 #define LCD_H_
 class Lcd{
   public:
-  Lcd(int pinrx);
-  void ELCD_initialize();
+  Lcd(void);
+  void ELCD_initialize(void);
   void ELCD_Cursor_OFF(void);
   void ELCD_Cursor_ON(void);
   void ELCD_Clear_LCD(void);
   void ELCD_Cursor_Position(int x, int y);
   void ELCD_put_str(char *str);
   void ELCD_put_ch(char ch);
+
+  void chargement(void);
 
   private:
 

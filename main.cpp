@@ -5,7 +5,7 @@
  *      Author: guill
  */
 #include "config.h"
-//#include "lcd.h"
+#include "lcd.h"
 #include "ncstepper.h"
 #include <WProgram.h>
 //============================================================================
@@ -36,14 +36,14 @@
 Stepper Xstep(Xmotor, Xdir, Xpin, Xfdc);
 Stepper Ystep(Ymotor, Ydir, Ypin, Yfdc);
 Stepper Zstep(Zmotor, Zdir, Zpin, Zfdc);
+Lcd mylcd;
 
 void setup() // fonction setup - début de l'exécution du programme
 {
   Serial.begin(9600);
-//  Serial1.begin(19200);
-//  ELCD_initialize();
-
-
+  mylcd.ELCD_initialize();
+  mylcd.chargement();
+  delay(3000);
 }
 
 void loop()

@@ -6,8 +6,8 @@
  */
 #include "lcd.h"
 #include <WProgram.h>
-Lcd::Lcd(int pinrx){
-
+Lcd::Lcd(){
+  Serial1.begin(19200);
 }
 
 void Lcd::ELCD_initialize(){
@@ -46,4 +46,11 @@ void Lcd::ELCD_put_ch(char ch){
   Serial1.print(0xA2, BYTE);
   Serial1.print(ch);
   Serial1.print(0, BYTE);
+}
+
+void Lcd::chargement(){
+  this->ELCD_Cursor_Position(1, 0);
+  this->ELCD_put_str(" _  _   _/   ._  _");
+  this->ELCD_put_str("/ //_ /_//_/// //_/");
+  this->ELCD_put_str("         by traker");
 }
