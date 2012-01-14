@@ -41,9 +41,12 @@ Lcd mylcd;
 void setup() // fonction setup - début de l'exécution du programme
 {
   Serial.begin(9600);
+  Serial1.begin(19200);
   mylcd.ELCD_initialize();
+  delay(1000);
   mylcd.chargement();
-  delay(3000);
+  delay(6000);
+  mylcd.ELCD_Clear_LCD();
 }
 
 void loop()
@@ -58,8 +61,9 @@ void loop()
                   if (incomingByte &= 8) {Zstep.step(incomingByte & 4 >> 2);}
 
                   // dit ce que vous obtenez
-                  Serial.print("J'ai recu : ");
-                  Serial.println(incomingByte, DEC);
+                  Serial.print(Xstep.getposmm());
+                  Serial.println(incomingByte, BYTE);
+                  mylcd.ELCD_put_ch('A');
    }
 }
 
