@@ -33,6 +33,7 @@ class Lcd{
   void ELCD_put_ch(char ch);
 
   void chargement(void);
+  void affiche(double x, double y, double z);
 
   private:
 

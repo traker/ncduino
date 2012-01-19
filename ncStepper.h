@@ -34,8 +34,8 @@ class Stepper {
     // mover method:
     void step(int number_of_steps);
 
-    float getposmm(void);
-    ;
+    double getposmm(void);
+    unsigned int getstep(void);
     int version(void);
 
   private:
@@ -44,8 +44,8 @@ class Stepper {
     unsigned long step_delay;    // delay between steps, in ms, based on speed
     int number_of_steps;      // total number of steps this motor can take
 //    int pin_count;        // whether you're driving the motor with 2 or 4 pins
-    int step_number;        // which step the motor is on
-    int step_mm;
+    unsigned int step_number;        // which step the motor is on
+    double step_mm;
 
     // motor pin numbers:
     int dir_pin;                // pin dir
@@ -57,4 +57,3 @@ class Stepper {
 };
 
 #endif
-

@@ -27,7 +27,7 @@ Stepper::Stepper(int number_of_steps, int dir_pin, int step_pin, int fdc_pin)
 {
   this->last_step_time = 0;                     // time stamp in ms of the last step taken
   this->number_of_steps = number_of_steps;      // total number of steps for this motor
-  this->step_mm = 1 / number_of_steps ;         // clacul en mm la distance d'un pas
+  this->step_mm = 0.000;         // clacul en mm la distance d'un pas
 
   // Arduino pins for the motor control connection:
   this->dir_pin = dir_pin;
@@ -35,6 +35,7 @@ Stepper::Stepper(int number_of_steps, int dir_pin, int step_pin, int fdc_pin)
 
   // Arduino pin pour fin de course
   this->fdc_pin = fdc_pin;
+  this->nbsteppos = 0;
 
   // setup the pins on the microcontroller:
   pinMode(this->dir_pin, OUTPUT);
@@ -62,11 +63,11 @@ unsigned long Stepper::getSpeed(){
  */
 void Stepper::step(int bytecommand)
 {  
-  if(bytecommand == 1){
+  if(bytecommand &= 1){
       digitalWrite(this->dir_pin, HIGH);
-      this->nbsteppos = this->nbsteppos + 1 ;
+      this->step_mm -= 0.005 ;
   }else{
-      this->nbsteppos = this->nbsteppos - 1 ;
+      this->step_mm += 0.005 ;
   }
   this->stepMotor();
   digitalWrite(this->dir_pin, LOW);
@@ -75,11 +76,13 @@ void Stepper::step(int bytecommand)
 /*
  * renvoie la position en millimetre
  */
-float Stepper::getposmm(){
+double Stepper::getposmm(){
 
-  return this->nbsteppos * this->step_mm;
+  return this->step_mm;
 }
-
+unsigned int Stepper::getstep(){
+  return this->nbsteppos;
+}
 /*
  * Moves the motor forward or backwards.
  */
@@ -99,4 +102,3 @@ int Stepper::version(void)
 {
   return .01;
 }
-

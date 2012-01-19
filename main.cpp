@@ -37,34 +37,37 @@ Stepper Xstep(Xmotor, Xdir, Xpin, Xfdc);
 Stepper Ystep(Ymotor, Ydir, Ypin, Yfdc);
 Stepper Zstep(Zmotor, Zdir, Zpin, Zfdc);
 Lcd mylcd;
+int i = 0;
 
 void setup() // fonction setup - début de l'exécution du programme
 {
-  Serial.begin(9600);
+  Serial.begin(57600);
   Serial1.begin(19200);
   mylcd.ELCD_initialize();
   delay(1000);
   mylcd.chargement();
-  delay(6000);
-  mylcd.ELCD_Clear_LCD();
+  delay(2000);
 }
 
 void loop()
 {
   if (Serial.available() > 0) {
                   incomingByte = Serial.read();
-
-                  if (incomingByte &= 128) {Xstep.step(incomingByte & 64 >> 6);}
-
-                  if (incomingByte &= 32) {Ystep.step(incomingByte & 16 >> 4);}
-
-                  if (incomingByte &= 8) {Zstep.step(incomingByte & 4 >> 2);}
-
+                  int temp = incomingByte;
                   // dit ce que vous obtenez
-                  Serial.print(Xstep.getposmm());
-                  Serial.println(incomingByte, BYTE);
-                  mylcd.ELCD_put_ch('A');
-   }
+                  i++;
+                  if (temp &= 128) {Xstep.step(temp & 64 >> 6);}
+                  temp = incomingByte;
+                  if (temp &= 32) {Ystep.step(temp & 16 >> 4);}
+                  temp = incomingByte;
+                  if (temp &= 8) {Zstep.step(temp & 4 >> 2);}
+                  temp = incomingByte;
+                  //Serial.println(Xstep.getposmm());
+                  //if ( i == 10) {
+                  mylcd.affiche(Xstep.getposmm(), Ystep.getposmm(), Zstep.getposmm());
+                  //i=0;}
+
+    }
 }
 
 
