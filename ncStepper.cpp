@@ -63,11 +63,13 @@ unsigned long Stepper::getSpeed(){
  */
 void Stepper::step(int bytecommand)
 {  
-  if(bytecommand &= 1){
+  //Serial.println(bytecommand);
+
+  if(bytecommand == 1){
       digitalWrite(this->dir_pin, HIGH);
-      this->step_mm -= 0.005 ;
-  }else{
       this->step_mm += 0.005 ;
+  }else{
+      this->step_mm -= 0.005 ;
   }
   this->stepMotor();
   digitalWrite(this->dir_pin, LOW);
@@ -102,3 +104,4 @@ int Stepper::version(void)
 {
   return .01;
 }
+
