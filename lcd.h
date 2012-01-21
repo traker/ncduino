@@ -5,19 +5,6 @@
  *      Author: guill
  */
 
-/**
-void setup() {
-  Serial1.begin(19200);
-  ELCD_initialize();
-  delay(200);
-  ELCD_Clear_LCD();
-  ELCD_Cursor_Position(0, 0);
-  ELCD_put_str("Hello World !");
-}
-
-void loop() {
-}
-*/
 /* Low Level ELCD routine */
 #ifndef LCD_H_
 #define LCD_H_
@@ -31,7 +18,6 @@ class Lcd{
   void ELCD_Cursor_Position(int x, int y);
   void ELCD_put_str(char *str);
   void ELCD_put_ch(char ch);
-
   void chargement(void);
   void affiche(double x, double y, double z);
 
