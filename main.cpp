@@ -47,6 +47,7 @@ void setup() // fonction setup - début de l'exécution du programme
   delay(1000);
   mylcd.chargement();
   delay(2000);
+
 }
 
 void loop()
@@ -54,21 +55,30 @@ void loop()
   if (Serial.available() > 0) {
                   incomingByte = Serial.read();
                   int temp = incomingByte;
-                  // dit ce que vous obtenez
+
                   i++;
-                  if (temp &= 128) {Xstep.step(temp & 64 >> 6);}
+                  if (temp &= 128) {
+                    temp = incomingByte;
+                    Xstep.step(temp & 64 >> 6);
+                  }
                   temp = incomingByte;
-                  if (temp &= 32) {Ystep.step(temp & 16 >> 4);}
+                  if (temp &= 32) {
+                      temp = incomingByte;
+                      Ystep.step(temp & 16 >> 4);
+                  }
                   temp = incomingByte;
-                  if (temp &= 8) {Zstep.step(temp & 4 >> 2);}
+                  if (temp &= 8) {
+                    temp = incomingByte;
+                    Zstep.step(temp & 4 >> 2);
+                  }
                   temp = incomingByte;
-                  //Serial.println(Xstep.getposmm());
                   //if ( i == 10) {
                   mylcd.affiche(Xstep.getposmm(), Ystep.getposmm(), Zstep.getposmm());
                   //i=0;}
 
     }
 }
+
 
 
 int main(void) {
