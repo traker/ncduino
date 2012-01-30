@@ -47,19 +47,19 @@ void setup() // fonction setup - début de l'exécution du programme
   delay(1000);
   mylcd.chargement();
   delay(2000);
-
+  
 }
 
 void loop()
 {
   if (Serial.available() > 0) {
+                  Serial.print("a");
                   incomingByte = Serial.read();
                   int temp = incomingByte;
-
                   i++;
                   if (temp &= 128) {
                     temp = incomingByte;
-                    Xstep.step(temp & 64 >> 6);
+                    Xstep.step(temp & 64 >> 6);             
                   }
                   temp = incomingByte;
                   if (temp &= 32) {
@@ -72,22 +72,21 @@ void loop()
                     Zstep.step(temp & 4 >> 2);
                   }
                   temp = incomingByte;
-                  //if ( i == 10) {
-                  mylcd.affiche(Xstep.getposmm(), Ystep.getposmm(), Zstep.getposmm());
-                  //i=0;}
-
+                  if ( i == 10) {
+                    mylcd.affiche(Xstep.getposmm(), Ystep.getposmm(), Zstep.getposmm());
+                    i=0;
+                  }
+                  
+                  
     }
 }
-
-
-
 int main(void) {
 
-  /* Must call init for arduino to work properly */
-  init();
-  setup();
+ /* Must call init for arduino to work properly */
+ init();
+ setup();
 
-  for (;;) {
-          loop();
-  } // end for
+ for (;;) {
+ loop();
+ } // end for
 } // end main
