@@ -25,8 +25,7 @@
  */
 Stepper::Stepper(int number_of_steps, int dir_pin, int step_pin, int fdc_pin)
 {
-  this->last_step_time = 0;                     // time stamp in ms of the last step taken
-  this->number_of_steps = number_of_steps;      // total number of steps for this motor
+  this->nb_steps_per_mm = number_of_steps;      // total number of steps for this motor
   this->step_mm = 0.000;         // clacul en mm la distance d'un pas
 
   // Arduino pins for the motor control connection:
@@ -35,7 +34,7 @@ Stepper::Stepper(int number_of_steps, int dir_pin, int step_pin, int fdc_pin)
 
   // Arduino pin pour fin de course
   this->fdc_pin = fdc_pin;
-  this->nbsteppos = 0;
+  this->nb_step_pos = 0;
 
   // setup the pins on the microcontroller:
   pinMode(this->dir_pin, OUTPUT);
@@ -48,12 +47,12 @@ Stepper::Stepper(int number_of_steps, int dir_pin, int step_pin, int fdc_pin)
 /*
   Sets the speed in revs per minute
 */
-void Stepper::setSpeed(long whatSpeed)
+void Stepper::set_speed(long whatSpeed)
 {
-  this->step_delay = 60L / ( whatSpeed * 1000L )/ this->number_of_steps * 1000L;
+  this->step_delay = 60L / ( whatSpeed * 1000L )/ this->nb_steps_per_mm * 1000L;
 }
 
-unsigned long Stepper::getSpeed(){
+long Stepper::get_speed(){
    return this->step_delay;
 }
 
@@ -61,42 +60,50 @@ unsigned long Stepper::getSpeed(){
   Moves the motor steps_to_move steps.  If the number is negative,
    the motor moves in the reverse direction.
  */
-void Stepper::step(int bytecommand)
+bool Stepper::step(int bytecommand)
 {  
   //Serial.println(bytecommand);
-
-  if(bytecommand == 1){
-      digitalWrite(this->dir_pin, HIGH);
-      this->step_mm += 0.005 ;
+  if(!this->stat_fdc()){
+      if(bytecommand == 1){
+          digitalWrite(this->dir_pin, HIGH);
+          this->step_mm += 0.005 ;
+      }else{
+          this->step_mm -= 0.005 ;
+      }
+      this->step_motor();
+      digitalWrite(this->dir_pin, LOW);
+      return true;
   }else{
-      this->step_mm -= 0.005 ;
+      return false;
   }
-  this->stepMotor();
-  digitalWrite(this->dir_pin, LOW);
 }
 
 /*
  * renvoie la position en millimetre
  */
-double Stepper::getposmm(){
+double Stepper::get_pos_mm(){
 
   return this->step_mm;
 }
-unsigned int Stepper::getstep(){
-  return this->nbsteppos;
+long Stepper::get_nb_step(){
+  return this->nb_step_pos;
 }
 /*
  * Moves the motor forward or backwards.
  */
-void Stepper::stepMotor()
+void Stepper::step_motor()
 {
       delayMicroseconds(100);
           digitalWrite(step_pin, LOW);
       delayMicroseconds(100);
           digitalWrite(step_pin, HIGH);
       delayMicroseconds(int(this->step_delay));
- }
+}
 
+bool Stepper::stat_fdc(void){
+  this->fdc = digitalRead(this->fdc_pin);
+  return this->fdc;
+}
 /*
   version() returns the version of the library:
 */

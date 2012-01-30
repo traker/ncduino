@@ -28,32 +28,30 @@ class Stepper {
     Stepper(int number_of_steps, int dir_pin, int step_pin, int fdc_pin);
 
     // speed setter method:
-    void setSpeed(long whatSpeed);
-    unsigned long getSpeed(void);
-
+    void set_speed(long whatSpeed);
+    long get_speed(void);
     // mover method:
-    void step(int number_of_steps);
-
-    double getposmm(void);
-    unsigned int getstep(void);
+    bool step(int number_of_steps);
+    // renvoi la position en mm
+    double get_pos_mm(void);
+    // renvoi la position en nbre de pas
+    long get_nb_step(void);
     int version(void);
 
   private:
-    void stepMotor();
+    void step_motor(void);
+    bool stat_fdc(void);
 
     unsigned long step_delay;    // delay between steps, in ms, based on speed
-    int number_of_steps;      // total number of steps this motor can take
-//    int pin_count;        // whether you're driving the motor with 2 or 4 pins
-    unsigned int step_number;        // which step the motor is on
+    int nb_steps_per_mm;      // nbre de pas pour 1 mm
     double step_mm;
-
     // motor pin numbers:
     int dir_pin;                // pin dir
     int step_pin;               // pin step
-
     int fdc_pin;                //pin fin de course
     long last_step_time;        // time stamp in ms of when the last step was taken
-    long nbsteppos ;            // position en nombre de pas a a partir de l'init machine
+    long nb_step_pos ;            // position en nombre de pas a a partir de l'init machine
+    bool fdc;
 };
 
 #endif
